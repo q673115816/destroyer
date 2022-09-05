@@ -1,55 +1,46 @@
-import { clamp } from 'lodash'
-import { WIDTH, HEIGHT, init } from './config'
+import { clamp } from "lodash";
+import { Common, WIDTH, HEIGHT } from "./common";
+type Code = "ArrowLeft" | "ArrowRight";
 
-type Code = 'ArrowLeft' | 'ArrowRight'
-
-export default class Control {
-  private SIZE = 150
-  private canvas: HTMLCanvasElement
-  private ctx: CanvasRenderingContext2D
+export default class Control extends Common {
+  width = 150;
+  height = 10;
   state: Record<Code, boolean> = {
     ArrowLeft: false,
     ArrowRight: false,
-  }
-  x = WIDTH / 2 - this.SIZE / 2
-  v = 2
+  };
+  x = WIDTH / 2 - this.width / 2;
+  y = HEIGHT - 100
+  v = 5;
   constructor() {
-    const { canvas, ctx } = init('#control')
-    this.canvas = canvas
-    this.ctx = ctx
-    this.init()
+    super("#control");
+    this.init();
   }
 
   init() {
-    this.register()
-    this.draw()
+    this.register();
   }
 
   update() {
-    if (this.state['ArrowLeft']) this.x -= this.v
-    if (this.state['ArrowRight']) this.x += this.v
-    this.x = clamp(this.x, 0, WIDTH - this.SIZE)
-  }
-
-  draw() {
-    this.update()
-    this.ctx.clearRect(0, 0, WIDTH, HEIGHT)
-    this.ctx.beginPath()
-    this.ctx.fillStyle = 'green'
-    this.ctx.fillRect(this.x, HEIGHT - 100, this.SIZE, 10)
-    this.ctx.restore()
-    requestAnimationFrame(this.draw)
+    if (this.state["ArrowLeft"]) this.x -= this.v;
+    if (this.state["ArrowRight"]) this.x += this.v;
+    this.x = clamp(this.x, -this.width / 2, WIDTH - this.width / 2);
+    this.ctx.clearRect(0, 0, WIDTH, HEIGHT);
+    this.ctx.beginPath();
+    this.ctx.fillStyle = "green";
+    this.ctx.fillRect(this.x, this.y, this.width, this.height);
+    this.ctx.restore();
   }
 
   register() {
-    document.addEventListener('keydown', (event) => {
-      const { code } = event
-      if (code in this.state) this.state[code as Code] = true
-    })
+    document.addEventListener("keydown", (event) => {
+      const { code } = event;
+      if (code in this.state) this.state[code as Code] = true;
+    });
 
-    document.addEventListener('keyup', (event) => {
-      const { code } = event
-      if (code in this.state) this.state[code as Code] = false
-    })
+    document.addEventListener("keyup", (event) => {
+      const { code } = event;
+      if (code in this.state) this.state[code as Code] = false;
+    });
   }
 }

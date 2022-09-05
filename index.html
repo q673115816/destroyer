@@ -1,19 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + TS</title>
-  </head>
-  <body>
-    <div id="app">
-      <canvas id="background"></canvas>
-      <canvas id="control"></canvas>
-      <canvas id="ball"></canvas>
-      <canvas id="wall"></canvas>
-      <canvas id="cell"></canvas>
-    </div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite + TS</title>
+</head>
+
+<body>
+  <div id="app">
+    <canvas id="background"></canvas>
+    <canvas id="control"></canvas>
+    <canvas id="ball"></canvas>
+    <canvas id="wall"></canvas>
+    <canvas id="cell"></canvas>
+  </div>
+  <div style="position: absolute;left: 0;top: 50%">
+    <button id="all">获取</button>
+    <button id="add">新增</button>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
 </html>

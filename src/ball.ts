@@ -1,52 +1,98 @@
-import { WIDTH, HEIGHT, init } from './config'
-const SIZE = 5
-const balls: Ball[] = []
-
-class BallList {
-  list: Ball[] = []
-  private timer: number | null = null
-  private canvas: HTMLCanvasElement
-  private ctx: CanvasRenderingContext2D
+import { Common, WIDTH, HEIGHT } from "./common";
+import Control from "./control";
+import Walls from "./wall";
+export default class Balls extends Common {
+  balls: Set<Ball> = new Set();
   constructor() {
-    const { canvas, ctx } = init('#ball')
-    this.canvas = canvas
-    this.ctx = ctx
-    this.draw()
+    super("#ball");
   }
 
-  draw() {
-    this.ctx.clearRect(0, 0, WIDTH, HEIGHT)
-    this.ctx.beginPath()
-    this.ctx.fillStyle = '#fff'
-    this.list.forEach(({ x, y }) => {
-      this.ctx.arc(x, y, SIZE, 0, 2 * Math.PI)
-    })
-    this.ctx.fill()
-    this.ctx.restore()
-    this.timer = requestAnimationFrame(this.draw)
+  update({ wall, control }: { wall: Walls; control: Control }) {
+    this.ctx.clearRect(0, 0, WIDTH, HEIGHT);
+    this.ctx.fillStyle = "#fff";
+    for (const ball of this.balls) {
+      const { x, y, size, isOut } = ball;
+      if (isOut) {
+        this.balls.delete(ball);
+        continue;
+      }
+      this.ctx.beginPath();
+      this.ctx.arc(x, y, size, 0, 2 * Math.PI);
+      this.ctx.fill();
+      ball.crash(control);
+      ball.update();
+    }
+    this.ctx.restore();
+  }
+
+  add(ball: Ball = new Ball({ x: 200, y: 200 })) {
+    this.balls.add(ball);
+  }
+
+  three() {
+    const temp: Ball[] = [];
+    for (const ball of this.balls) {
+      const { x, y } = ball;
+      temp.push(ball);
+      for (let i = 0; i < 3; i++) {
+        temp.push(new Ball({ x, y }));
+      }
+    }
+    this.balls = new Set(temp);
+  }
+
+  get() {
+    return this.balls;
   }
 }
 
-export default class Ball {
-  x: number
-  y: number
-  private size = SIZE
-  private xv: number = Math.random() * 2 - 1
-  private yv: number = Math.random() * 2 - 1
+class Ball {
+  x: number;
+  y: number;
+  size = 5;
+  private xv: number;
+  private yv: number;
+  isOut: Boolean = false;
   constructor({ x, y }: { x: number; y: number }) {
-    this.x = x
-    this.y = y
-
-    this.start()
+    this.x = x;
+    this.y = y;
+    this.xv = Math.random() * 5 - 5;
+    this.yv = -Math.sqrt(25 - this.xv * this.xv);
   }
 
-  start() {
-    this.x += this.xv
-    this.y += this.yv
-    if (this.x < 0 || this.x - this.size >= WIDTH) this.xv *= -1
-    if (this.y < 0 || this.y - this.size >= HEIGHT) this.xv *= -1
-    if (this.x < 0) this.x = -this.x
-    if (this.y < 0) this.y = -this.y
-    if (this.x - this.size >= WIDTH) this.x -= WIDTH - this.x + this.size
+  update() {
+    this.x += this.xv;
+    this.y += this.yv;
+    if (!this.check()) return;
+  }
+
+  crash({
+    x,
+    y,
+    width,
+    height,
+  }: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  }): boolean {
+    if (y <= this.y + this.size && x < this.x && x + width > this.x) {
+      this.yv *= -1;
+      this.xv *= -1;
+    }
+    return false;
+  }
+
+  check(): boolean {
+    if (this.y - this.size >= HEIGHT) {
+      this.isOut = true;
+      return false;
+    }
+    if (this.x < 0 || this.x - this.size >= WIDTH) this.xv *= -1;
+    if (this.y < 0) this.yv *= -1;
+    if (this.x < 0) this.x = -this.x;
+    if (this.y < 0) this.y = -this.y;
+    return true;
   }
 }
