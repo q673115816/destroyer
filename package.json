@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://q673115816.github.io/destroyer/",
   "description": "砖块破坏者",
   "scripts": {
     "dev": "vite",
