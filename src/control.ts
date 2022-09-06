@@ -1,6 +1,7 @@
 import { clamp } from "lodash";
 import { concatAll, fromEvent, takeUntil, map } from "rxjs";
 import { Common, WIDTH, HEIGHT } from "./common";
+import Destroyer from './main'
 type Code = "ArrowLeft" | "ArrowRight";
 
 export default class Control extends Common {
@@ -13,7 +14,7 @@ export default class Control extends Common {
   x = WIDTH / 2 - this.width / 2;
   y = HEIGHT - 200;
   v = 5;
-  constructor() {
+  constructor(private main: Destroyer) {
     super("#control");
     this.init();
   }
@@ -39,6 +40,9 @@ export default class Control extends Common {
     document.addEventListener("keydown", (event) => {
       const { code } = event;
       if (code in this.state) this.state[code as Code] = true;
+      if (code === "Space") {
+        this.main.balls.add()
+      }
     });
 
     document.addEventListener("keyup", (event) => {

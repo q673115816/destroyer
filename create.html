@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        #app {
+            display: grid;
+            grid-template-columns: repeat(45, auto);
+        }
+
+        div {
+            aspect-ratio: 1 / 1;
+            outline: 0.5px solid #333;
+            user-select: none;
+        }
+
+        div:hover {
+            background-color: #333;
+        }
+
+        div.cell {
+            background-color: #f00;
+        }
+
+        div.wall {
+            background-color: #0f0;
+        }
+    </style>
+</head>
+
+<body>
+    <main id="app"></main>
+    <button>输出</button>
+    <label>cell
+        <input type="radio" name="asd" value="cell">
+    </label>
+    <label>wall
+        <input type="radio" name="asd" value="wall">
+    </label>
+</body>
+<script>
+    const app = document.querySelector('#app')
+    const frag = document.createDocumentFragment()
+    for (let i = 0; i < 45 * 45; i++) {
+        const div = document.createElement('div')
+        frag.append(div)
+    }
+    app.append(frag)
+
+    let downing = false
+
+    document.addEventListener('mousedown', (e) => {
+        downing = true
+        add(e)
+    })
+    document.addEventListener('mousemove', (e) => {
+        if (!downing) return
+        add(e)
+    })
+    document.addEventListener('mouseup', (e) => {
+        downing = false
+    })
+
+    function add(e) {
+        const value = document.querySelector('[name="asd"][checked]').value
+        if (e.target.nodeName === 'DIV') {
+            e.target.classList.length = 0
+            e.target.classList.add(value)
+        }
+    }
+
+
+    document.querySelector('button').addEventListener('click', () => {
+        const result = ""
+        document.querySelectorAll('div').forEach((e) => {
+            if (e.classList.has('on')) result += '2'
+        })
+    })
+</script>
+
+</html>

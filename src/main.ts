@@ -2,13 +2,15 @@ import "./style.css";
 import Control from "./control";
 import Balls from "./ball";
 import Wall from "./wall";
+import Gift from "./gift";
 import Cells from "./cell";
 
-class Destroyer {
-  wall = new Wall();
-  cells = new Cells();
-  balls = new Balls();
-  control = new Control();
+export default class Destroyer {
+  wall = new Wall(this);
+  gift = new Gift();
+  cells = new Cells(this);
+  balls = new Balls(this);
+  control = new Control(this);
   constructor() {
     this.init();
     this.update();
