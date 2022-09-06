@@ -2,7 +2,7 @@ import "./style.css";
 import Control from "./control";
 import Balls from "./ball";
 import Wall from "./wall";
-import Cells from "./Cell";
+import Cells from "./cell";
 
 class Destroyer {
   wall = new Wall();
