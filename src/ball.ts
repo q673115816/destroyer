@@ -83,6 +83,9 @@ class Ball {
       x < this.x + this.size &&
       x + width > this.x
     ) {
+      if(this.y + this.size > y) {
+        this.y -= this.y + this.size - y
+      }
       this.yv *= -1
       this.xv *= -1
     }

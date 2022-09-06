@@ -25,4 +25,12 @@ jobs:
     - name: Build
       run: |
         npm install
-        npx webpack
+        npm build
+
+    - name: Deploy 🚀
+      uses: JamesIves/github-pages-deploy-action@4.1.1
+      with:
+        token: ${{ secrets.ACTIONS }}
+        branch: gh-pages # The branch the action should deploy to.
+        folder: dist # The folder the action should deploy.
+        clean: true # Automatically remove deleted files from the deploy branch
