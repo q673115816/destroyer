@@ -1,10 +1,12 @@
 import { Block, WIDTH, HEIGHT } from "./common";
 import layout from "./layout";
+import Destroyer from "./main";
 export default class Walls extends Block {
-  index: number = 1;
+  index: number;
   layout: string = "";
-  constructor() {
+  constructor(main: Destroyer) {
     super("#wall");
+    this.index = main.index
     this.layout = layout[this.index];
     this.init();
   }

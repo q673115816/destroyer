@@ -40,9 +40,13 @@
 
 <body>
     <main id="app"></main>
-    <button>输出</button>
+    <button id="输出">输出</button>
+    <button id="clear">清空</button>
+    <label>empty
+        <input type="radio" name="asd" value="" checked>
+    </label>
     <label>cell
-        <input type="radio" name="asd" value="cell">
+        <input type="radio" name="asd" value="cell" checked>
     </label>
     <label>wall
         <input type="radio" name="asd" value="wall">
@@ -72,19 +76,29 @@
     })
 
     function add(e) {
-        const value = document.querySelector('[name="asd"][checked]').value
-        if (e.target.nodeName === 'DIV') {
-            e.target.classList.length = 0
-            e.target.classList.add(value)
-        }
+        let value
+        document.querySelectorAll('[name="asd"]').forEach((item) => {
+            if (item.checked) value = item.value
+        })
+        if (e.target.nodeName !== 'DIV') return
+        if (value === e.target.className) return
+        e.target.className = ''
+        if (value) e.target.classList.add(value)
     }
 
 
-    document.querySelector('button').addEventListener('click', () => {
-        const result = ""
-        document.querySelectorAll('div').forEach((e) => {
-            if (e.classList.has('on')) result += '2'
+    document.querySelector('#clear').addEventListener('click', function () {
+        document.querySelectorAll('div').forEach((item) => item.className = '')
+    })
+
+    document.querySelector('#输出').addEventListener('click', function () {
+        let result = ''
+        document.querySelectorAll('div').forEach((item) => {
+            if (item.className === 'wall') result += 1
+            if (item.className === 'cell') result += 2
+            if (item.className === '') result += 0
         })
+        console.log(result)
     })
 </script>
 

@@ -1,11 +1,13 @@
 import { Block, WIDTH, HEIGHT } from "./common";
 import layout from "./layout";
+import Destroyer from "./main";
 
 export default class Cells extends Block {
-  index = 1;
+  index: number;
   layout: string[] = [];
-  constructor() {
+  constructor(main: Destroyer) {
     super("#cell");
+    this.index = main.index;
     this.layout = [...layout[this.index]];
     this.init();
   }

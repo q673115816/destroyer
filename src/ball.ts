@@ -1,5 +1,4 @@
 import { Common, WIDTH, HEIGHT } from "./common";
-import Control from "./control";
 import Destroyer from "./main";
 import Walls from "./wall";
 export default class Balls extends Common {
@@ -8,7 +7,7 @@ export default class Balls extends Common {
     super("#ball");
   }
 
-  update({ wall, control }: { wall: Walls; control: Control }) {
+  update() {
     this.ctx.clearRect(0, 0, WIDTH, HEIGHT);
     this.ctx.fillStyle = "#fff";
     for (const ball of this.balls) {
@@ -20,7 +19,9 @@ export default class Balls extends Common {
       this.ctx.beginPath();
       this.ctx.arc(x, y, size, 0, 2 * Math.PI);
       this.ctx.fill();
-      ball.crash(control);
+      ball.crash(this.main.control);
+      ball.location(this.main.wall)
+
       ball.update();
     }
     this.ctx.restore();
@@ -93,13 +94,15 @@ class Ball {
       if (this.y + this.size > y) {
         this.y -= this.y + this.size - y;
       }
-      console.log((this.x - x - width / 2) / width / 2);
+      const ratio = (this.x - x - width / 2) / (width / 2);
+      this.xv = ((ratio * this.v) / 10) * 9;
+      this.yv = -Math.sqrt(this.v ** 2 - this.xv ** 2);
     }
     return false;
   }
 
-  location() {
-    
+  location(block: Walls) {
+    this.x
   }
 
   redirect() {

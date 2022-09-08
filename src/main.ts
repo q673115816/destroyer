@@ -6,6 +6,7 @@ import Gift from "./gift";
 import Cells from "./cell";
 
 export default class Destroyer {
+  index = 0;
   wall = new Wall(this);
   gift = new Gift();
   cells = new Cells(this);
@@ -18,13 +19,10 @@ export default class Destroyer {
 
   init() {
     this.balls.add();
-    this.balls.add();
-    this.balls.add();
-    this.balls.add();
   }
 
   update() {
-    this.balls.update({wall: this.wall, control: this.control})
+    this.balls.update()
     this.control.update()
     requestAnimationFrame(this.update.bind(this));
   }
