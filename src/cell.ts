@@ -13,6 +13,10 @@ export default class Cells extends Block {
   }
 
   init() {
+    this.update();
+  }
+
+  update() {
     this.ctx.clearRect(0, 0, WIDTH, HEIGHT);
     this.ctx.fillStyle = "#f00";
     for (let i = 0; i < this.layout.length; i++) {
@@ -27,5 +31,6 @@ export default class Cells extends Block {
       this.ctx.fill();
     }
     this.ctx.restore();
+    requestAnimationFrame(this.update.bind(this))
   }
 }

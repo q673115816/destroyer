@@ -1,3 +1,4 @@
+import Cells from "./cell";
 import { Common, WIDTH, HEIGHT } from "./common";
 import Destroyer from "./main";
 import Walls from "./wall";
@@ -20,7 +21,8 @@ export default class Balls extends Common {
       this.ctx.arc(x, y, size, 0, 2 * Math.PI);
       this.ctx.fill();
       ball.crash(this.main.control);
-      ball.location(this.main.wall)
+      // ball.index(this.main.cells);
+      // ball.location(this.main.wall);
 
       ball.update();
     }
@@ -101,8 +103,23 @@ class Ball {
     return false;
   }
 
+  index(block: Cells) {
+    const x = Math.min(block.num, (this.x / (block.size | 0)) | 0);
+    const y = Math.min(block.num, (this.y / (block.size | 0)) | 0);
+    const index = x + y * block.num;
+    if (!block.layout[index]) return;
+    if (block.layout[index] === "2") {
+      block.layout[index] = "0";
+      this.redirect();
+    }
+  }
+
   location(block: Walls) {
-    this.x
+    const x = Math.min(block.num, (this.x / (block.size | 0)) | 0);
+    const y = Math.min(block.num, (this.y / (block.size | 0)) | 0);
+    const index = x + y * block.num;
+    if (!block.layout[index]) return;
+    if (block.layout[index] !== "0") this.redirect();
   }
 
   redirect() {
