@@ -5,7 +5,7 @@ import Destroyer from './main'
 type Code = "ArrowLeft" | "ArrowRight";
 
 export default class Control extends Common {
-  width = 150;
+  width = 80;
   height = 10;
   state: Record<Code, boolean> = {
     ArrowLeft: false,

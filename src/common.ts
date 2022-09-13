@@ -20,3 +20,26 @@ export class Block extends Common {
     super(id);
   }
 }
+
+export class Rect {
+  x: number;
+  y: number;
+  size: number;
+  color: string;
+  constructor({
+    x,
+    y,
+    size,
+    color,
+  }: {
+    x: number;
+    y: number;
+    size: number;
+    color: string;
+  }) {
+    this.x = x;
+    this.y = y;
+    this.size = size;
+    this.color = color;
+  }
+}
